@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+    <title>Edit Sales Entry</title>
+    <script>
+        function validateForm() {
+            var name = document.getElementById("name").value;
+            var item = document.getElementById("item").value;
+            var amount = document.getElementById("amount").value;
+            var dot = document.getElementById("dot").value;
+
+            if (name === "" || item === "" || dot === "") {
+                alert("Data cannot be blank");
+                return false;
+            }
+
+            if (amount === "" || parseFloat(amount) <= 0) {
+                alert("Sales cannot be 0 or blank");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Edit Sales Entry</h1>
+
+    <div class="bg-info text-white p-4 mt-5 rounded">
+        <h4>Edit Sales Entry</h4>
+        <form th:action="@{/saveSale}" th:object="${salesman}" method="post" onsubmit="return validateForm()">
+
+            <div class="form-group">
+                <label for="transactionNumber">Transaction Number</label>
+                <input type="text" id="transactionNumber" th:field="*{id}" class="form-control" readonly>
+            </div>
+
+            <input type="hidden" th:field="*{id}"/>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label for="name">Salesman Name</label>
+                    <input type="text" id="name" th:field="*{name}" class="form-control" required>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="item">Item Type</label>
+                    <select id="item" th:field="*{item}" class="form-control" required>
+                        <option value="">Select an Item</option>
+                        <option value="Washing Machine">Washing Machine</option>
+                        <option value="Refrigerator">Refrigerator</option>
+                        <option value="Music System">Music System</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="amount">Sales Amount</label>
+                    <input type="number" step="0.01" id="amount" th:field="*{amount}" class="form-control" required>
+                </div>
+
+                <div class="form-group col-md-3">
+                    <label for="dot">Date of Transaction</label>
+                    <input type="date" id="dot" th:field="*{dot}" class="form-control" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-light mt-3">Update</button>
+            <a th:href="@{/index}" class="btn btn-secondary mt-3">Cancel</a>
+        </form>
+    </div>
+</div>
+</body>
+</html>
